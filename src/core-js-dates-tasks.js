@@ -198,22 +198,21 @@ function formatDate(date) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
-  // const daysInMonths =
-  //   new Date(year, 1, 29).getDate() === 29
-  //     ? [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-  //     : [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+function getCountWeekendsInMonth(month, year) {
+  const daysInMonths =
+    new Date(year, 1, 29).getDate() === 29
+      ? [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+      : [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-  // let totalNumberOfWeekend = 0;
+  let totalNumberOfWeekend = 0;
 
-  // for (let i = 1; i <= daysInMonths[month - 1]; i = +1) {
-  //   const date = new Date(Date.UTC(year, month - 1, i));
-  //   if (date.getUTCDay() === 0 || date.getUTCDay() === 6) {
-  //     totalNumberOfWeekend += 1;
-  //   }
-  // }
-  // return totalNumberOfWeekend;
+  for (let i = 1; i <= daysInMonths[month - 1]; i += 1) {
+    const date = new Date(Date.UTC(year, month - 1, i));
+    if (date.getUTCDay() === 0 || date.getUTCDay() === 6) {
+      totalNumberOfWeekend += 1;
+    }
+  }
+  return totalNumberOfWeekend;
 }
 
 /**
