@@ -198,21 +198,22 @@ function formatDate(date) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(month, year) {
-  const daysInMonths =
-    new Date(year, 1, 29).getDate() === 29
-      ? [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-      : [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+function getCountWeekendsInMonth(/* month, year */) {
+  throw new Error('Not implemented');
+  // const daysInMonths =
+  //   new Date(year, 1, 29).getDate() === 29
+  //     ? [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  //     : [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-  let totalNumberOfWeekend = 0;
+  // let totalNumberOfWeekend = 0;
 
-  for (let i = 1; i <= daysInMonths[month - 1]; i = +1) {
-    const date = new Date(Date.UTC(year, month - 1, i));
-    if (date.getUTCDay() === 0 || date.getUTCDay() === 6) {
-      totalNumberOfWeekend += 1;
-    }
-  }
-  return totalNumberOfWeekend;
+  // for (let i = 1; i <= daysInMonths[month - 1]; i = +1) {
+  //   const date = new Date(Date.UTC(year, month - 1, i));
+  //   if (date.getUTCDay() === 0 || date.getUTCDay() === 6) {
+  //     totalNumberOfWeekend += 1;
+  //   }
+  // }
+  // return totalNumberOfWeekend;
 }
 
 /**
@@ -228,8 +229,26 @@ function getCountWeekendsInMonth(month, year) {
  * Date(2024, 0, 31) => 5
  * Date(2024, 1, 23) => 8
  */
-function getWeekNumberByDate(/* date */) {
-  throw new Error('Not implemented');
+function getWeekNumberByDate(date) {
+  const myDate = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+  );
+  const currentYear = myDate.getFullYear();
+  const firstDayOfYear = new Date(Date.UTC(currentYear, 0, 1));
+  let dayOfFirstThursdayOfYear = null;
+  if (firstDayOfYear.getUTCDay() <= 4)
+    dayOfFirstThursdayOfYear = new Date(
+      Date.UTC(currentYear, 0, 1 + (4 - firstDayOfYear.getUTCDay()))
+    );
+  else
+    dayOfFirstThursdayOfYear = new Date(
+      Date.UTC(currentYear, 0, 1 + (7 - firstDayOfYear.getUTCDay() + 4))
+    );
+  const firstMondayOfYear = new Date(dayOfFirstThursdayOfYear);
+  firstMondayOfYear.setUTCDate(dayOfFirstThursdayOfYear.getUTCDay() - 3);
+  const diff = myDate - firstMondayOfYear;
+  const milesecInOneWeek = 7 * 24 * 60 * 60 * 1000;
+  return Math.floor(diff / milesecInOneWeek) + 1;
 }
 
 /**
